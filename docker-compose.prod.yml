@@ -22,7 +22,7 @@ services:
     
   
   db:
-    image: postgres:13
+    image: postgres13
     container_name: db
     restart: always
     networks:

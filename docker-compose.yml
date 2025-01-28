@@ -19,6 +19,7 @@ services:
       - .:/code
     depends_on:
       - db    
+      - redis
   db:
     image: postgres:13  # <-- Service ostida joylashgan
     volumes:
@@ -40,9 +41,18 @@ services:
   #   restart: unless-stopped
   #   volumes:
   #     - pgadmin_data:/var/lib/pgadmin
+  redis:
+    image: redis:alpine  # Redisni alpin orqali kichik va tezroq o'rnatamiz
+    container_name: redis
+    ports:
+      - "6379:6379"  # Redisni 6379 portiga ko'rsatish
+    restart: always  # Redisni har doim ishga tushirish
+    volumes:
+      - redis_data:/data
 
 volumes:
   postgres_data:
   static_volume:
   media_volume:
+  redis_data:
   # pgadmin_data:

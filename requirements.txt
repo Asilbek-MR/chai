@@ -1,4 +1,4 @@
-django==4.2.8
+django
 python-decouple
 djangorestframework
 gunicorn
@@ -11,3 +11,5 @@ django-filter
 python-dateutil
 instabot==0.117.0
 sentry-sdk[django]
+django-channels 
+channels-redis

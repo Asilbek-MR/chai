@@ -44,7 +44,8 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 LOCAL_APPS = [
-'apps.accounts'
+'apps.accounts',
+'apps.chat',
 ]
 
 INSTALLED_APPS = [
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     "modeltranslation",
     "drf_yasg",
     "corsheaders",
+    "channels",
     "django_filters",
 ] + LOCAL_APPS
 
@@ -133,6 +135,25 @@ WSGI_APPLICATION = "config.wsgi.application"
 #         "PORT": config("DB_PORT", cast=int),
 #     }
 # }
+
+ASGI_APPLICATION = "config.asgi.application"
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {"hosts": [("127.0.0.1", 6379)]},
+#     },
+# }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                ("redis", 6379), 
+            ],
+        },
+    },
+}
 
 DATABASES = {
     "default": {

@@ -10,4 +10,4 @@ django-cors-headers
 django-filter
 python-dateutil
 instabot==0.117.0
-sentry-sdk[django]
+sentry-sdk[django]=====

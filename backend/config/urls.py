@@ -32,6 +32,7 @@ urlpatterns = [
     # path("sentry-debug/", trigger_error),
     path("admin/", admin.site.urls),
     # Auth
+    path('chat/',include('apps.chat.urls')),
     path("auth/", include("rest_framework.urls", namespace="rest_framework")),
     
 ] + swagger_urlpatterns

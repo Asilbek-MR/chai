@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat</title>
+</head>
+<body>
+    <h2>Simple WebSocket Chat</h2>
+    <input type="text" id="messageInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+    <ul id="messages"></ul>
+
+    <script>
+        let socket;
+        const socketUrl = "ws://localhost:8000/ws/chat/1/";
+
+        function connectWebSocket() {
+            socket = new WebSocket(socketUrl);
+
+            socket.onopen = function(event) {
+                console.log("Connected to WebSocket server.");
+            };
+
+            socket.onmessage = function(event) {
+                const messageList = document.getElementById("messages");
+                const newMessage = document.createElement("li");
+                newMessage.textContent = event.data;
+                messageList.appendChild(newMessage);
+            };
+
+            socket.onclose = function(event) {
+                console.log("WebSocket disconnected, attempting to reconnect...");
+                setTimeout(connectWebSocket, 3000); // 3 soniyadan keyin qayta ulanadi
+            };
+
+            socket.onerror = function(error) {
+                console.error("WebSocket Error:", error);
+                socket.close();
+            };
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("messageInput");
+            const message = input.value;
+
+            if (message && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({ "message": message }));
+                input.value = "";
+            } else {
+                console.log("WebSocket is not connected.");
+            }
+        }
+
+        connectWebSocket(); // WebSocket ulanishini boshlash
+    </script>
+</body>
+</html>

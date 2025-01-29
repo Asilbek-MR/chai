@@ -13,3 +13,4 @@ instabot==0.117.0
 sentry-sdk[django]
 django-channels 
 channels-redis
+daphne

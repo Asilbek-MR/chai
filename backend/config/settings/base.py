@@ -49,6 +49,8 @@ LOCAL_APPS = [
 ]
 
 INSTALLED_APPS = [
+    "channels",
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -60,7 +62,6 @@ INSTALLED_APPS = [
     "modeltranslation",
     "drf_yasg",
     "corsheaders",
-    "channels",
     "django_filters",
 ] + LOCAL_APPS
 
@@ -106,7 +107,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR, 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

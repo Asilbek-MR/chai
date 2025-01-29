@@ -13,9 +13,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
 
-    async def disconnect(self, close_code):
-        # Leave room group
-        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+    # async def disconnect(self, close_code):
+    #     # Leave room group
+    #     await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -25,7 +25,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Save message to the database
         await sync_to_async(Message.objects.create)(
             chat_room_id=self.room_name,
-            sender=self.scope["user"],
+            # sender=self.scope["user"],
             content=message,
         )
 

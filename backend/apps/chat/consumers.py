@@ -1,7 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
-from .models import ChatRoom, Message
+from .models import ChatRoom, Message, User
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -21,10 +21,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         message = data["message"]
         # username = self.scope["user"].username
-
         # Save message to the database
         await sync_to_async(Message.objects.create)(
-            chat_room_id=self.room_name,
+            chat_room_id = 2,
+            # sender_id = 1,
             # sender=self.scope["user"],
             content=message,
         )

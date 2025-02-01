@@ -1,5 +1,50 @@
 
 
+# services:
+#   web:
+#     build: 
+#       context: .
+#       dockerfile: ./devops/backend/Dockerfile
+#     restart: unless-stopped
+#     entrypoint: /code/devops/backend/local-entrypoint.sh
+#     env_file:
+#       - ./.env
+#     ports:
+#       - 8000:8000
+#     expose:
+#       - 8000
+#     volumes:
+#       - static_volume:/code/backend/staticfiles
+#       - media_volume:/code/backend/media
+#       - .:/code
+#     depends_on:
+#       - db    
+#       - redis
+#   db:
+#     image: postgres:13  # <-- Service ostida joylashgan
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data/
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#       POSTGRES_DB: postgres
+
+#   redis:
+#     image: redis:alpine  # Redisni alpin orqali kichik va tezroq o'rnatamiz
+#     container_name: redis
+#     ports:
+#       - "6379:6379"  # Redisni 6379 portiga ko'rsatish
+#     restart: always  # Redisni har doim ishga tushirish
+#     volumes:
+#       - redis_data:/data
+
+# volumes:
+#   postgres_data:
+#   static_volume:
+#   media_volume:
+#   redis_data:
+#   # pgadmin_data:
+
 services:
   web:
     build: 
@@ -18,41 +63,43 @@ services:
       - media_volume:/code/backend/media
       - .:/code
     depends_on:
-      - db    
+      - db
       - redis
   db:
-    image: postgres:13  # <-- Service ostida joylashgan
+    image: postgres:13
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-
-  # pgadmin:
-  #   image: dpage/pgadmin4
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: "*****@gmail.com"  
-  #     PGADMIN_DEFAULT_PASSWORD: "123123"    
-  #   ports:
-  #     - "5050:80"  
-  #   depends_on:
-  #     - db  
-  #   restart: unless-stopped
-  #   volumes:
-  #     - pgadmin_data:/var/lib/pgadmin
   redis:
-    image: redis:alpine  # Redisni alpin orqali kichik va tezroq o'rnatamiz
+    image: redis:alpine
     container_name: redis
     ports:
-      - "6379:6379"  # Redisni 6379 portiga ko'rsatish
-    restart: always  # Redisni har doim ishga tushirish
+      - "6379:6379"
+    restart: always
     volumes:
       - redis_data:/data
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile  
+    restart: unless-stopped
+    ports:
+      - "3000:3000"  # Frontendni 3000-portga ulash
+    volumes:
+      - ./frontend:/app    # Live reload uchun
+      - /app/node_modules
+    depends_on:
+      - web  # Backendni kutish
+  
+
 
 volumes:
   postgres_data:
   static_volume:
   media_volume:
   redis_data:
-  # pgadmin_data:
+
+
